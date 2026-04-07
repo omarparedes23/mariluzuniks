@@ -80,6 +80,16 @@ export default function Footer() {
           ))}
         </div>
 
+        {/* Instagram handle */}
+        <a
+          href="https://www.instagram.com/unikssalonspa"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-sans text-xs text-cream/30 hover:text-gold transition-colors tracking-wider"
+        >
+          @unikssalonspa
+        </a>
+
         {/* Closing phrase */}
         <p className="font-serif italic text-gold/40 text-sm text-center">
           &ldquo;Sentirte linda es una elección de todos los días&rdquo;

@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import ValoresStrip from '@/components/ValoresStrip'
 import Servicios from '@/components/Servicios'
+import Marcas from '@/components/Marcas'
 import Galeria from '@/components/Galeria'
 import Nosotros from '@/components/Nosotros'
 import Testimonios from '@/components/Testimonios'
@@ -15,6 +16,7 @@ export default function Home() {
       <Hero />
       <ValoresStrip />
       <Servicios />
+      <Marcas />
       <Galeria />
       <Nosotros />
       <Testimonios />

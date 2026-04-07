@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Cormorant_Garamond, Jost } from 'next/font/google'
 import './globals.css'
-import CustomCursor from '@/components/CustomCursor'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -53,7 +52,6 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${cormorant.variable} ${jost.variable}`}>
       <body className="bg-bg text-cream font-sans antialiased">
-        <CustomCursor />
         {children}
       </body>
     </html>
