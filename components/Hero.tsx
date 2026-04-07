@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import GoldButton from '@/components/ui/GoldButton'
 
@@ -51,9 +52,31 @@ export default function Hero() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       aria-label="Sección principal"
     >
-      {/* Animated gradient mesh background */}
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&h=1080&fit=crop"
+          alt="Salón de belleza profesional"
+          fill
+          className="object-cover"
+          priority
+          quality={90}
+          sizes="100vw"
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/70" />
+        {/* Gradient overlay for depth */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(13,13,13,0.8) 0%, rgba(13,13,13,0.4) 50%, rgba(13,13,13,0.9) 100%)'
+          }}
+        />
+      </div>
+
+      {/* Animated gradient mesh background - subtle overlay */}
       <div
-        className="absolute inset-0 animate-gradient"
+        className="absolute inset-0 animate-gradient opacity-30"
         style={{
           background:
             'linear-gradient(-45deg, #0d0d0d, #1c1508, #0d0d0d, #14120a, #0d0d0d, #1a1208)',
@@ -65,7 +88,7 @@ export default function Hero() {
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,169,110,0.07) 0%, transparent 65%)',
+            'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,169,110,0.1) 0%, transparent 65%)',
         }}
       />
 
@@ -117,13 +140,13 @@ export default function Hero() {
           {/* Main headline */}
           <motion.h1
             variants={itemVariants}
-            className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-cream leading-[1.05] mb-2"
+            className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-cream leading-[1.05] mb-2 drop-shadow-lg"
           >
             Atrévete a transformar
           </motion.h1>
           <motion.p
             variants={itemVariants}
-            className="font-serif italic text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-gold leading-[1.05]"
+            className="font-serif italic text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-gold leading-[1.05] drop-shadow-lg"
           >
             tu look
           </motion.p>
@@ -139,11 +162,11 @@ export default function Hero() {
           {/* Subtitle */}
           <motion.p
             variants={itemVariants}
-            className="font-sans text-cream/55 text-base md:text-lg max-w-lg mx-auto mb-10 leading-relaxed"
+            className="font-sans text-cream/70 text-base md:text-lg max-w-lg mx-auto mb-10 leading-relaxed drop-shadow-md"
           >
             Especialistas en mechas, keratina, tratamientos y más
             <br className="hidden sm:block" />
-            <span className="text-gold/60"> &middot; San Borja, Lima</span>
+            <span className="text-gold/70"> &middot; San Borja, Lima</span>
           </motion.p>
 
           {/* CTA buttons */}
