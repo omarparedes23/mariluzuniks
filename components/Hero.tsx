@@ -55,48 +55,39 @@ export default function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&h=1080&fit=crop"
+          src="/images/salon.jpg"
           alt="Salón de belleza profesional"
           fill
           className="object-cover"
           priority
-          quality={90}
           sizes="100vw"
         />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/70" />
-        {/* Gradient overlay for depth */}
+        {/* Soft overlay ensuring general legibility without hiding image */}
+        <div className="absolute inset-0 bg-black/20" />
+        
+        {/* Elegant bottom fade gradient replacing the visual card */}
         <div 
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, rgba(13,13,13,0.8) 0%, rgba(13,13,13,0.4) 50%, rgba(13,13,13,0.9) 100%)'
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)'
           }}
         />
       </div>
 
-      {/* Animated gradient mesh background - subtle overlay */}
+      {/* Radial golden glow at center, kept for subtitle accent */}
       <div
-        className="absolute inset-0 animate-gradient opacity-30"
-        style={{
-          background:
-            'linear-gradient(-45deg, #0d0d0d, #1c1508, #0d0d0d, #14120a, #0d0d0d, #1a1208)',
-        }}
-      />
-
-      {/* Radial golden glow at center */}
-      <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
           background:
             'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,169,110,0.1) 0%, transparent 65%)',
         }}
       />
 
-      {/* Top vignette */}
+      {/* Top vignette to protect navbar */}
       <div
-        className="absolute top-0 left-0 right-0 h-32"
+        className="absolute top-0 left-0 right-0 h-32 pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, #0d0d0d, transparent)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)',
         }}
       />
 
@@ -122,12 +113,12 @@ export default function Hero() {
       ))}
 
       {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto pt-24">
+      <div className="relative z-10 text-center px-4 sm:px-6 max-w-5xl mx-auto pt-32 pb-12 w-full">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-center"
+          className="flex flex-col items-center w-full"
         >
           {/* Eyebrow label */}
           <motion.p
@@ -172,14 +163,22 @@ export default function Hero() {
           {/* CTA buttons */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-sm sm:max-w-none mx-auto"
+            className="flex flex-col sm:flex-row gap-4 justify-center w-full max-w-sm sm:max-w-none mx-auto mt-4 items-center"
           >
-            <GoldButton href="#servicios" variant="outline">
-              Descubrir servicios
-            </GoldButton>
-            <GoldButton href={WA_URL} external variant="primary">
+            <a
+              href={WA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 font-sans tracking-widest uppercase transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold bg-gold text-black hover:bg-gold-light active:scale-95 shadow-lg shadow-gold/20 font-bold text-base px-8 py-4 w-full sm:w-auto"
+            >
               Reservar por WhatsApp
-            </GoldButton>
+            </a>
+            <a
+              href="#servicios"
+              className="inline-flex items-center justify-center gap-2 font-sans tracking-widest uppercase transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold border border-white/30 text-cream/90 hover:bg-white/5 active:scale-95 font-normal text-xs px-6 py-3 w-full sm:w-auto mt-2 sm:mt-0"
+            >
+              Descubrir servicios
+            </a>
           </motion.div>
         </motion.div>
       </div>
