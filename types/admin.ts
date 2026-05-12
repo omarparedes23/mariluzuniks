@@ -19,11 +19,11 @@ export interface Servicio {
 
 export interface PagoServicio {
   id: string
-  pago_id: string
+  pago_id?: string
   servicio_id: string | null
   precio_aplicado: number
-  servicio?: Servicio
-  created_at: string
+  servicio?: Servicio | null
+  created_at?: string
 }
 
 export interface Pago {
