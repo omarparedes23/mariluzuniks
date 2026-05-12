@@ -34,3 +34,15 @@ Thumbs.db
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# Vercel
+.vercel/
+
+# Claude / AI tooling
+CLAUDE.md
+AGENTS.md
+.atl/
+*.atl
+
+# Misc
+npm
