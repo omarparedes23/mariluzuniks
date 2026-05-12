@@ -69,34 +69,65 @@ export interface Database {
       uniks_pagos: {
         Row: {
           id: string
-          monto: number
+          monto_total: number
           metodo_pago: 'efectivo' | 'transferencia'
           fecha: string
-          servicio_id: string | null
+          cliente_nombre: string | null
           descripcion: string | null
           created_at: string
         }
         Insert: {
           id?: string
-          monto: number
+          monto_total: number
           metodo_pago: 'efectivo' | 'transferencia'
           fecha?: string
-          servicio_id?: string | null
+          cliente_nombre?: string | null
           descripcion?: string | null
           created_at?: string
         }
         Update: {
           id?: string
-          monto?: number
+          monto_total?: number
           metodo_pago?: 'efectivo' | 'transferencia'
           fecha?: string
-          servicio_id?: string | null
+          cliente_nombre?: string | null
           descripcion?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      uniks_pago_servicios: {
+        Row: {
+          id: string
+          pago_id: string
+          servicio_id: string | null
+          precio_aplicado: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          pago_id: string
+          servicio_id?: string | null
+          precio_aplicado: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          pago_id?: string
+          servicio_id?: string | null
+          precio_aplicado?: number
           created_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "uniks_pagos_servicio_id_fkey"
+            foreignKeyName: "uniks_pago_servicios_pago_id_fkey"
+            columns: ["pago_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_pagos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "uniks_pago_servicios_servicio_id_fkey"
             columns: ["servicio_id"]
             isOneToOne: false
             referencedRelation: "uniks_servicios"
