@@ -13,8 +13,8 @@ export interface Servicio {
   nombre: string
   precio: number
   duracion: number
-  created_at: string
-  updated_at: string
+  created_at?: string
+  updated_at?: string
 }
 
 export interface PagoServicio {
