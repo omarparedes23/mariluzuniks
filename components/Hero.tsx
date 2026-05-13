@@ -55,7 +55,7 @@ export default function Hero() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/salon.jpg"
+          src="https://pub-2867d18774614f369c999e6a52033a51.r2.dev/web/portada1.jpeg"
           alt="Salón de belleza profesional"
           fill
           className="object-cover"

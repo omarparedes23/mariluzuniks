@@ -37,7 +37,7 @@ export default function Nosotros() {
         >
           <div className="relative overflow-hidden">
             <Image
-              src="https://picsum.photos/seed/team/600/700"
+              src="https://pub-2867d18774614f369c999e6a52033a51.r2.dev/web/corte1.jpeg"
               alt="Equipo de Uniks Salón & Spa"
               width={600}
               height={700}

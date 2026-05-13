@@ -14,29 +14,29 @@ interface Marca {
 const marcas: Marca[] = [
   { 
     name: "L'Oréal Paris", 
-    logoSrc: "/images/loreal.png",
+    logoSrc: "https://pub-2867d18774614f369c999e6a52033a51.r2.dev/web/loreal.png",
     highlight: "Profesional" 
   },
   { 
     name: "Italian Max", 
-    logoSrc: "/images/italianmax.jpg",
+    logoSrc: "https://pub-2867d18774614f369c999e6a52033a51.r2.dev/web/italianmax.jpg",
   },
   { 
     name: "OPI", 
-    logoSrc: "/images/opi.jpg",
+    logoSrc: "https://pub-2867d18774614f369c999e6a52033a51.r2.dev/web/opi.jpg",
   },
   { 
     name: "Kleral", 
-    logoSrc: "/images/kleral.jpg",
+    logoSrc: "https://pub-2867d18774614f369c999e6a52033a51.r2.dev/web/kleral.jpg",
     highlight: "Made in Italy" 
   },
   { 
     name: "Just", 
-    logoSrc: "/images/just.png",
+    logoSrc: "https://pub-2867d18774614f369c999e6a52033a51.r2.dev/web/just.png",
   },
   { 
     name: "Baor", 
-    logoSrc: "/images/baor.png",
+    logoSrc: "https://pub-2867d18774614f369c999e6a52033a51.r2.dev/web/baor.png",
   },
 ]
 
