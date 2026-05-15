@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createPayment } from '@/lib/actions/payments'
 import type { Servicio } from '@/types/admin'
-import { ArrowLeft, CreditCard, DollarSign, Calendar, Scissors, User, Plus, X } from 'lucide-react'
+import { ArrowLeft, CreditCard, DollarSign, Calendar, Scissors, User, Plus, X, Hash } from 'lucide-react'
+import CustomerSelector from '../components/CustomerSelector'
 
 interface PaymentService {
   servicio_id: string
@@ -22,12 +23,16 @@ export default function NewPaymentForm({ services }: NewPaymentFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [selectedServices, setSelectedServices] = useState<PaymentService[]>([])
+  const [clienteId, setClienteId] = useState<string | null>(null)
   const [clienteNombre, setClienteNombre] = useState('')
-  const [metodoPago, setMetodoPago] = useState<'efectivo' | 'transferencia'>('efectivo')
+  const [metodoPago, setMetodoPago] = useState<'efectivo' | 'transferencia' | 'yape'>('efectivo')
   const [descripcion, setDescripcion] = useState('')
   const [fecha, setFecha] = useState(new Date().toISOString().slice(0, 16))
+  const [numeroOperacion, setNumeroOperacion] = useState('')
+  const [numeroOperacionWarning, setNumeroOperacionWarning] = useState('')
 
   const montoTotal = selectedServices.reduce((sum, s) => sum + s.precio_aplicado, 0)
+  const showNumeroOperacion = metodoPago === 'transferencia' || metodoPago === 'yape'
 
   function addService() {
     if (services.length === 0) return
@@ -64,13 +69,23 @@ export default function NewPaymentForm({ services }: NewPaymentFormProps) {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setNumeroOperacionWarning('')
+
+    // Client-side validation: warn if digital payment lacks numero_operacion
+    if (showNumeroOperacion && !numeroOperacion.trim()) {
+      setNumeroOperacionWarning('Se recomienda ingresar el número de operación para transferencias y Yape')
+    }
 
     const formData = new FormData()
     formData.append('monto_total', montoTotal.toString())
     formData.append('metodo_pago', metodoPago)
+    if (clienteId) {
+      formData.append('cliente_id', clienteId)
+    }
     formData.append('cliente_nombre', clienteNombre)
     formData.append('descripcion', descripcion)
     formData.append('fecha', fecha)
+    formData.append('numero_operacion', showNumeroOperacion ? numeroOperacion : '')
     formData.append('servicios', JSON.stringify(
       selectedServices.map(s => ({
         servicio_id: s.servicio_id,
@@ -112,17 +127,17 @@ export default function NewPaymentForm({ services }: NewPaymentFormProps) {
 
           {/* Cliente */}
           <div>
-            <label htmlFor="cliente_nombre" className="block text-sm text-cream/80 mb-2">
+            <label className="block text-sm text-cream/80 mb-2">
               <User className="w-4 h-4 inline mr-2" />
               Cliente (opcional)
             </label>
-            <input
-              type="text"
-              id="cliente_nombre"
-              value={clienteNombre}
-              onChange={(e) => setClienteNombre(e.target.value)}
-              className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
-              placeholder="Nombre del cliente (dejar vacío si es walk-in)"
+            <CustomerSelector
+              value={clienteId}
+              onChange={(id, nombre) => {
+                setClienteId(id)
+                setClienteNombre(nombre || '')
+              }}
+              placeholder="Seleccionar cliente (dejar vacío si es walk-in)"
             />
           </div>
 
@@ -135,14 +150,48 @@ export default function NewPaymentForm({ services }: NewPaymentFormProps) {
             <select
               id="metodo_pago"
               value={metodoPago}
-              onChange={(e) => setMetodoPago(e.target.value as 'efectivo' | 'transferencia')}
+              onChange={(e) => {
+                const nuevoMetodo = e.target.value as 'efectivo' | 'transferencia' | 'yape'
+                setMetodoPago(nuevoMetodo)
+                if (nuevoMetodo === 'efectivo') {
+                  setNumeroOperacion('')
+                  setNumeroOperacionWarning('')
+                }
+              }}
               required
               className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream focus:border-gold focus:outline-none transition-colors"
             >
               <option value="efectivo">Efectivo</option>
               <option value="transferencia">Transferencia</option>
+              <option value="yape">Yape</option>
             </select>
           </div>
+
+          {/* Número de operación */}
+          {showNumeroOperacion && (
+            <div>
+              <label htmlFor="numero_operacion" className="block text-sm text-cream/80 mb-2">
+                <Hash className="w-4 h-4 inline mr-2" />
+                Número de operación (recomendado)
+              </label>
+              <input
+                type="text"
+                id="numero_operacion"
+                value={numeroOperacion}
+                onChange={(e) => {
+                  setNumeroOperacion(e.target.value)
+                  if (e.target.value.trim()) {
+                    setNumeroOperacionWarning('')
+                  }
+                }}
+                className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
+                placeholder="Ej: 987654321"
+              />
+              {numeroOperacionWarning && (
+                <p className="mt-1 text-sm text-amber-400">{numeroOperacionWarning}</p>
+              )}
+            </div>
+          )}
 
           {/* Services */}
           <div className="border-t border-gold/20 pt-6">

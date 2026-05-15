@@ -66,35 +66,109 @@ export interface Database {
         }
         Relationships: []
       }
+      uniks_clientes: {
+        Row: {
+          id: string
+          nombre: string
+          telefono: string | null
+          email: string | null
+          notas: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          nombre: string
+          telefono?: string | null
+          email?: string | null
+          notas?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          nombre?: string
+          telefono?: string | null
+          email?: string | null
+          notas?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      uniks_proveedores: {
+        Row: {
+          id: string
+          nombre: string
+          telefono: string | null
+          ruc: string | null
+          notas: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          nombre: string
+          telefono?: string | null
+          ruc?: string | null
+          notas?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          nombre?: string
+          telefono?: string | null
+          ruc?: string | null
+          notas?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       uniks_pagos: {
         Row: {
           id: string
           monto_total: number
-          metodo_pago: 'efectivo' | 'transferencia'
+          metodo_pago: 'efectivo' | 'transferencia' | 'yape'
           fecha: string
+          cliente_id: string | null
           cliente_nombre: string | null
           descripcion: string | null
+          numero_operacion: string | null
           created_at: string
         }
         Insert: {
           id?: string
           monto_total: number
-          metodo_pago: 'efectivo' | 'transferencia'
+          metodo_pago: 'efectivo' | 'transferencia' | 'yape'
           fecha?: string
+          cliente_id?: string | null
           cliente_nombre?: string | null
           descripcion?: string | null
+          numero_operacion?: string | null
           created_at?: string
         }
         Update: {
           id?: string
           monto_total?: number
-          metodo_pago?: 'efectivo' | 'transferencia'
+          metodo_pago?: 'efectivo' | 'transferencia' | 'yape'
           fecha?: string
+          cliente_id?: string | null
           cliente_nombre?: string | null
           descripcion?: string | null
+          numero_operacion?: string | null
           created_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "uniks_pagos_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_clientes"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       uniks_pago_servicios: {
         Row: {
@@ -135,6 +209,62 @@ export interface Database {
           }
         ]
       }
+      uniks_gastos: {
+        Row: {
+          id: string
+          monto: number
+          categoria: 'insumos' | 'servicios' | 'alquiler' | 'marketing' | 'otros'
+          fecha: string
+          descripcion: string | null
+          metodo_pago: 'efectivo' | 'transferencia' | 'yape'
+          proveedor_id: string | null
+          proveedor_nombre: string | null
+          tipo_comprobante: 'factura' | 'boleta' | 'ticket' | 'sin_comprobante' | null
+          numero_comprobante: string | null
+          numero_operacion: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          monto: number
+          categoria: 'insumos' | 'servicios' | 'alquiler' | 'marketing' | 'otros'
+          fecha?: string
+          descripcion?: string | null
+          metodo_pago: 'efectivo' | 'transferencia' | 'yape'
+          proveedor_id?: string | null
+          proveedor_nombre?: string | null
+          tipo_comprobante?: 'factura' | 'boleta' | 'ticket' | 'sin_comprobante' | null
+          numero_comprobante?: string | null
+          numero_operacion?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          monto?: number
+          categoria?: 'insumos' | 'servicios' | 'alquiler' | 'marketing' | 'otros'
+          fecha?: string
+          descripcion?: string | null
+          metodo_pago?: 'efectivo' | 'transferencia' | 'yape'
+          proveedor_id?: string | null
+          proveedor_nombre?: string | null
+          tipo_comprobante?: 'factura' | 'boleta' | 'ticket' | 'sin_comprobante' | null
+          numero_comprobante?: string | null
+          numero_operacion?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uniks_gastos_proveedor_id_fkey"
+            columns: ["proveedor_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_proveedores"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -143,7 +273,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      gasto_tipo_comprobante: 'factura' | 'boleta' | 'ticket' | 'sin_comprobante'
     }
     CompositeTypes: {
       [_ in never]: never

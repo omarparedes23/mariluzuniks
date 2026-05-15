@@ -6,8 +6,10 @@ import {
   CreditCard,
   TrendingUp,
   Calendar,
-  User
+  User,
+  Receipt
 } from 'lucide-react'
+import { getExpenses } from '@/lib/actions/expenses'
 
 export default async function AdminDashboard() {
   const supabase = await createClient()
@@ -49,6 +51,27 @@ export default async function AdminDashboard() {
     .order('fecha', { ascending: false })
     .limit(5)
 
+  // Fetch today's expenses
+  const todayStr = today.toISOString().slice(0, 10)
+  const todayExpensesList = await getExpenses({ startDate: todayStr, endDate: todayStr })
+  const todayExpensesTotal = todayExpensesList.reduce((sum, e) => sum + Number(e.monto), 0)
+
+  // Fetch monthly expenses and income
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1)
+  const monthStartStr = monthStart.toISOString().slice(0, 10)
+
+  const monthExpensesList = await getExpenses({ startDate: monthStartStr, endDate: todayStr })
+  const monthExpensesTotal = monthExpensesList.reduce((sum, e) => sum + Number(e.monto), 0)
+
+  const { data: monthPayments } = await supabase
+    .from('uniks_pagos')
+    .select('monto_total')
+    .gte('fecha', monthStart.toISOString())
+    .lt('fecha', tomorrow.toISOString())
+
+  const monthIncomeTotal = monthPayments?.reduce((sum, p) => sum + Number(p.monto_total), 0) || 0
+  const netProfit = monthIncomeTotal - monthExpensesTotal
+
   const stats = [
     {
       label: 'Productos',
@@ -71,6 +94,13 @@ export default async function AdminDashboard() {
       href: '/admin/pagos',
       color: 'text-green-400',
     },
+    {
+      label: 'Gastos Hoy',
+      value: `S/ ${todayExpensesTotal.toFixed(2)}`,
+      icon: Receipt,
+      href: '/admin/gastos',
+      color: 'text-red-400',
+    },
   ]
 
   return (
@@ -81,7 +111,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat) => (
           <Link
             key={stat.label}
@@ -99,7 +129,7 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Today's Payments */}
         <div className="bg-card border border-gold/20 rounded-lg p-6">
           <div className="flex items-center justify-between mb-6">
@@ -200,10 +230,35 @@ export default async function AdminDashboard() {
             Ver todos los pagos →
           </Link>
         </div>
+
+        {/* Monthly Profit */}
+        <div className="bg-card border border-gold/20 rounded-lg p-6">
+          <h2 className="font-serif text-xl text-cream mb-4">Resumen Mensual</h2>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between py-2 border-b border-gold/10">
+              <span className="text-muted">Ingresos del mes</span>
+              <span className="text-green-400 font-medium">
+                S/ {monthIncomeTotal.toFixed(2)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between py-2 border-b border-gold/10">
+              <span className="text-muted">Gastos del mes</span>
+              <span className="text-red-400 font-medium">
+                S/ {monthExpensesTotal.toFixed(2)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between py-2">
+              <span className="text-cream font-medium">Utilidad neta</span>
+              <span className={`font-serif text-xl ${netProfit >= 0 ? 'text-gold' : 'text-red-400'}`}>
+                S/ {netProfit.toFixed(2)}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Quick Links */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
         <Link
           href="/admin/productos/nuevo"
           className="flex items-center gap-4 bg-card border border-gold/20 rounded-lg p-4 hover:border-gold/40 transition-colors"
@@ -227,6 +282,19 @@ export default async function AdminDashboard() {
           <div>
             <p className="text-cream font-medium">Agregar Servicio</p>
             <p className="text-muted text-sm">Crear nuevo servicio del salón</p>
+          </div>
+        </Link>
+
+        <Link
+          href="/admin/gastos/nuevo"
+          className="flex items-center gap-4 bg-card border border-gold/20 rounded-lg p-4 hover:border-gold/40 transition-colors"
+        >
+          <div className="w-10 h-10 bg-gold/20 rounded-lg flex items-center justify-center">
+            <Receipt className="w-5 h-5 text-gold" />
+          </div>
+          <div>
+            <p className="text-cream font-medium">Registrar Gasto</p>
+            <p className="text-muted text-sm">Añadir un nuevo gasto del negocio</p>
           </div>
         </Link>
       </div>

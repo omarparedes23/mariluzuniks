@@ -2,14 +2,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { logout } from '@/lib/actions/auth'
 import { createClient } from '@/lib/supabase/server'
-import { 
-  LayoutDashboard, 
-  Package, 
-  Scissors, 
-  CreditCard, 
-  LogOut,
-  User
-} from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
+import SidebarNav from './components/SidebarNav'
 
 export default async function AdminLayout({
   children,
@@ -23,13 +17,6 @@ export default async function AdminLayout({
     redirect('/admin/login')
   }
 
-  const navItems = [
-    { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/admin/productos', label: 'Productos', icon: Package },
-    { href: '/admin/servicios', label: 'Servicios', icon: Scissors },
-    { href: '/admin/pagos', label: 'Pagos', icon: CreditCard },
-  ]
-
   return (
     <div className="min-h-screen bg-bg flex">
       {/* Sidebar */}
@@ -41,18 +28,7 @@ export default async function AdminLayout({
           </Link>
         </div>
 
-        <nav className="flex-1 p-4 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex items-center gap-3 px-4 py-3 text-cream/80 hover:text-gold hover:bg-gold/10 rounded-lg transition-colors"
-            >
-              <item.icon className="w-5 h-5" />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <SidebarNav />
 
         <div className="p-4 border-t border-gold/20">
           <div className="flex items-center gap-3 px-4 py-3 mb-2">

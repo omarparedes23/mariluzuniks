@@ -33,7 +33,7 @@ export default async function PaymentsPage({ searchParams }: PaymentsPageProps) 
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-card border border-gold/20 rounded-lg p-4">
           <p className="text-muted text-sm mb-1">Total Período</p>
           <p className="font-serif text-2xl text-gold">S/ {summary.total.toFixed(2)}</p>
@@ -45,6 +45,10 @@ export default async function PaymentsPage({ searchParams }: PaymentsPageProps) 
         <div className="bg-card border border-gold/20 rounded-lg p-4">
           <p className="text-muted text-sm mb-1">Transferencia</p>
           <p className="font-serif text-xl text-cream">S/ {summary.transferencia.toFixed(2)}</p>
+        </div>
+        <div className="bg-card border border-gold/20 rounded-lg p-4">
+          <p className="text-muted text-sm mb-1">Yape</p>
+          <p className="font-serif text-xl text-cream">S/ {summary.yape.toFixed(2)}</p>
         </div>
       </div>
 
@@ -74,10 +78,10 @@ export default async function PaymentsPage({ searchParams }: PaymentsPageProps) 
                     </span>
                   </td>
                   <td className="p-4">
-                    {payment.cliente_nombre ? (
+                    {payment.cliente?.nombre || payment.cliente_nombre ? (
                       <span className="flex items-center gap-1 text-cream">
                         <User className="w-4 h-4 text-gold" />
-                        {payment.cliente_nombre}
+                        {payment.cliente?.nombre || payment.cliente_nombre}
                       </span>
                     ) : (
                       <span className="text-muted text-sm italic">Walk-in</span>
@@ -106,10 +110,16 @@ export default async function PaymentsPage({ searchParams }: PaymentsPageProps) 
                     <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs ${
                       payment.metodo_pago === 'efectivo'
                         ? 'bg-green-500/20 text-green-400'
+                        : payment.metodo_pago === 'yape'
+                        ? 'bg-purple-500/20 text-purple-400'
                         : 'bg-blue-500/20 text-blue-400'
                     }`}>
                       <CreditCard className="w-3 h-3" />
-                      {payment.metodo_pago === 'efectivo' ? 'Efectivo' : 'Transferencia'}
+                      {payment.metodo_pago === 'efectivo'
+                        ? 'Efectivo'
+                        : payment.metodo_pago === 'yape'
+                        ? 'Yape'
+                        : 'Transferencia'}
                     </span>
                   </td>
                   <td className="p-4 text-right">
