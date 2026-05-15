@@ -289,7 +289,7 @@ export default function ExpenseForm({
               name="tipo_comprobante"
               required
               value={tipoComprobante}
-              onChange={(e) => setTipoComprobante(e.target.value)}
+              onChange={(e) => setTipoComprobante(e.target.value as GastoTipoComprobante)}
               className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream focus:border-gold focus:outline-none transition-colors"
             >
               {tiposComprobante.map((tc) => (
