@@ -14,7 +14,7 @@ import {
   Hash,
   Store,
 } from 'lucide-react'
-import type { Gasto } from '@/types/admin'
+import type { Gasto, GastoTipoComprobante } from '@/types/admin'
 import ProveedorSelector from './ProveedorSelector'
 
 interface ExpenseFormProps {
@@ -64,7 +64,7 @@ export default function ExpenseForm({
 
   // Controlled state for conditional fields
   const [metodoPago, setMetodoPago] = useState(expense?.metodo_pago || '')
-  const [tipoComprobante, setTipoComprobante] = useState(
+  const [tipoComprobante, setTipoComprobante] = useState<GastoTipoComprobante>(
     expense?.tipo_comprobante || 'sin_comprobante'
   )
   const [proveedorId, setProveedorId] = useState<string | null>(expense?.proveedor_id || null)
