@@ -7,6 +7,8 @@ import { updateProduct, deleteProduct } from '@/lib/actions/products'
 import type { Producto } from '@/types/admin'
 import { ArrowLeft, Upload, Package, Trash2 } from 'lucide-react'
 
+const MARGEN = 0.18
+
 interface EditProductFormProps {
   product: Producto
 }
@@ -17,6 +19,8 @@ export default function EditProductForm({ product }: EditProductFormProps) {
   const [error, setError] = useState('')
   const [removeImage, setRemoveImage] = useState(false)
   const [preview, setPreview] = useState<string | null>(null)
+  const [precioCosto, setPrecioCosto] = useState(product.precio_costo?.toString() ?? '')
+  const [precioVenta, setPrecioVenta] = useState(product.precio.toString())
 
   async function handleSubmit(formData: FormData) {
     setLoading(true)
@@ -47,6 +51,17 @@ export default function EditProductForm({ product }: EditProductFormProps) {
       router.refresh()
     } else {
       setError(result.error || 'Error al eliminar el producto')
+    }
+  }
+
+  function handleCostoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const val = e.target.value
+    setPrecioCosto(val)
+    const costo = parseFloat(val)
+    if (!isNaN(costo) && costo > 0) {
+      setPrecioVenta((costo * (1 + MARGEN)).toFixed(2))
+    } else {
+      setPrecioVenta('')
     }
   }
 
@@ -150,26 +165,47 @@ export default function EditProductForm({ product }: EditProductFormProps) {
             />
           </div>
 
-          {/* Stock and Price */}
+          {/* Stock */}
+          <div>
+            <label htmlFor="stock" className="block text-sm text-cream/80 mb-2">
+              Stock *
+            </label>
+            <input
+              type="number"
+              id="stock"
+              name="stock"
+              required
+              min="0"
+              defaultValue={product.stock}
+              className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
+              placeholder="0"
+            />
+          </div>
+
+          {/* Prices */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="stock" className="block text-sm text-cream/80 mb-2">
-                Stock *
+              <label htmlFor="precio_costo" className="block text-sm text-cream/80 mb-2">
+                Precio de costo (S/) *
               </label>
               <input
                 type="number"
-                id="stock"
-                name="stock"
+                id="precio_costo"
+                name="precio_costo"
                 required
                 min="0"
-                defaultValue={product.stock}
+                step="0.01"
+                value={precioCosto}
+                onChange={handleCostoChange}
                 className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
-                placeholder="0"
+                placeholder="0.00"
               />
+              <p className="text-muted text-xs mt-1">Precio unitario de la factura</p>
             </div>
             <div>
               <label htmlFor="precio" className="block text-sm text-cream/80 mb-2">
-                Precio (S/) *
+                Precio de venta (S/) *
+                <span className="ml-2 text-gold/70 font-normal">+18%</span>
               </label>
               <input
                 type="number"
@@ -178,10 +214,12 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                 required
                 min="0"
                 step="0.01"
-                defaultValue={product.precio}
+                value={precioVenta}
+                onChange={(e) => setPrecioVenta(e.target.value)}
                 className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
                 placeholder="0.00"
               />
+              <p className="text-muted text-xs mt-1">Se calcula solo, pero puedes ajustarlo</p>
             </div>
           </div>
 

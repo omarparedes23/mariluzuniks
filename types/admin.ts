@@ -2,6 +2,7 @@ export interface Producto {
   id: string
   nombre: string
   stock: number
+  precio_costo: number | null
   precio: number
   imagen_url_r2: string | null
   created_at: string

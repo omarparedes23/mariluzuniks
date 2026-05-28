@@ -44,6 +44,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
   
   const nombre = formData.get('nombre') as string
   const stock = parseInt(formData.get('stock') as string)
+  const precio_costo = parseFloat(formData.get('precio_costo') as string)
   const precio = parseFloat(formData.get('precio') as string)
   const imagen = formData.get('imagen') as File
 
@@ -63,6 +64,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
     .insert({
       nombre,
       stock,
+      precio_costo: isNaN(precio_costo) ? null : precio_costo,
       precio,
       imagen_url_r2,
     })
@@ -87,6 +89,7 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
   
   const nombre = formData.get('nombre') as string
   const stock = parseInt(formData.get('stock') as string)
+  const precio_costo = parseFloat(formData.get('precio_costo') as string)
   const precio = parseFloat(formData.get('precio') as string)
   const imagen = formData.get('imagen') as File
   const removeImage = formData.get('removeImage') === 'true'
@@ -128,6 +131,7 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
     .update({
       nombre,
       stock,
+      precio_costo: isNaN(precio_costo) ? null : precio_costo,
       precio,
       imagen_url_r2,
     })

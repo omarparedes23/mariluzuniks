@@ -99,6 +99,14 @@ export default function Footer() {
         <p className="font-sans text-[0.65rem] text-cream/20 tracking-wider text-center">
           &copy; 2025 Uniks Salón &amp; Spa &middot; San Borja, Lima
         </p>
+
+        {/* Admin access — intentionally subtle */}
+        <Link
+          href="/admin"
+          className="font-sans text-[0.6rem] text-cream/10 hover:text-cream/30 transition-colors tracking-wider"
+        >
+          Administración
+        </Link>
       </div>
     </footer>
   )
