@@ -119,20 +119,51 @@ export default function NewProductPage() {
             />
           </div>
 
-          {/* Stock */}
+          {/* Codigo */}
           <div>
-            <label htmlFor="stock" className="block text-sm text-cream/80 mb-2">
-              Stock *
+            <label htmlFor="codigo" className="block text-sm text-cream/80 mb-2">
+              Código <span className="text-muted font-normal">(opcional)</span>
             </label>
             <input
-              type="number"
-              id="stock"
-              name="stock"
-              required
-              min="0"
+              type="text"
+              id="codigo"
+              name="codigo"
               className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
-              placeholder="0"
+              placeholder="Ej: SH-001"
             />
+          </div>
+
+          {/* Stock + Stock Mínimo */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="stock" className="block text-sm text-cream/80 mb-2">
+                Stock inicial *
+              </label>
+              <input
+                type="number"
+                id="stock"
+                name="stock"
+                required
+                min="0"
+                className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
+                placeholder="0"
+              />
+            </div>
+            <div>
+              <label htmlFor="stock_minimo" className="block text-sm text-cream/80 mb-2">
+                Stock mínimo
+              </label>
+              <input
+                type="number"
+                id="stock_minimo"
+                name="stock_minimo"
+                min="0"
+                defaultValue={0}
+                className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
+                placeholder="0"
+              />
+              <p className="text-muted text-xs mt-1">Alerta cuando stock llega a este valor</p>
+            </div>
           </div>
 
           {/* Prices */}

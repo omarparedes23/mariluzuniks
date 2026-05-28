@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getProducts } from '@/lib/actions/products'
-import { Plus, Pencil, Package } from 'lucide-react'
+import { Plus, Pencil, Package, AlertTriangle } from 'lucide-react'
 import { DeleteProductButton } from './components/DeleteProductButton'
 
 export default async function ProductsPage() {
@@ -14,13 +14,21 @@ export default async function ProductsPage() {
           <h1 className="font-serif text-3xl text-cream mb-2">Productos</h1>
           <p className="text-muted">Gestiona el inventario de productos</p>
         </div>
-        <Link
-          href="/admin/productos/nuevo"
-          className="bg-gold text-black px-4 py-2 rounded font-medium hover:bg-gold-light transition-colors flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Nuevo Producto
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/productos/ajuste"
+            className="border border-gold/50 text-gold px-4 py-2 rounded font-medium hover:bg-gold/10 transition-colors flex items-center gap-2"
+          >
+            Ajuste de Stock
+          </Link>
+          <Link
+            href="/admin/productos/nuevo"
+            className="bg-gold text-black px-4 py-2 rounded font-medium hover:bg-gold-light transition-colors flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Nuevo Producto
+          </Link>
+        </div>
       </div>
 
       {products.length > 0 ? (
@@ -30,6 +38,7 @@ export default async function ProductsPage() {
               <tr className="border-b border-gold/20">
                 <th className="text-left p-4 text-cream font-medium">Imagen</th>
                 <th className="text-left p-4 text-cream font-medium">Nombre</th>
+                <th className="text-left p-4 text-cream font-medium">Código</th>
                 <th className="text-left p-4 text-cream font-medium">Stock</th>
                 <th className="text-left p-4 text-cream font-medium">Precio</th>
                 <th className="text-right p-4 text-cream font-medium">Acciones</th>
@@ -54,10 +63,19 @@ export default async function ProductsPage() {
                     )}
                   </td>
                   <td className="p-4 text-cream">{product.nombre}</td>
+                  <td className="p-4 text-muted text-sm">{product.codigo || '—'}</td>
                   <td className="p-4">
-                    <span className={`${product.stock < 5 ? 'text-red-400' : 'text-cream'}`}>
-                      {product.stock}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className={product.stock_minimo > 0 && product.stock <= product.stock_minimo ? 'text-red-400 font-medium' : 'text-cream'}>
+                        {product.stock}
+                      </span>
+                      {product.stock_minimo > 0 && product.stock <= product.stock_minimo && (
+                        <span className="flex items-center gap-1 text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">
+                          <AlertTriangle className="w-3 h-3" />
+                          Stock bajo
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="p-4 text-cream">S/ {Number(product.precio).toFixed(2)}</td>
                   <td className="p-4">

@@ -1,7 +1,9 @@
 export interface Producto {
   id: string
   nombre: string
+  codigo: string | null
   stock: number
+  stock_minimo: number
   precio_costo: number | null
   precio: number
   imagen_url_r2: string | null
@@ -96,6 +98,43 @@ export interface Gasto {
   proveedor?: Proveedor | null
   created_at: string
   updated_at: string
+}
+
+export interface Compra {
+  id: string
+  proveedor_id: string | null
+  proveedor?: Proveedor | null
+  fecha: string
+  tipo_comprobante: GastoTipoComprobante
+  numero_comprobante: string | null
+  metodo_pago: GastoMetodoPago
+  total: number
+  notas: string | null
+  items?: CompraItem[]
+  created_at: string
+  updated_at: string
+}
+
+export interface CompraItem {
+  id: string
+  compra_id: string
+  producto_id: string
+  producto?: Producto | null
+  cantidad: number
+  precio_unitario: number
+  subtotal: number
+  created_at: string
+}
+
+export interface AjusteStock {
+  id: string
+  producto_id: string
+  producto?: Producto | null
+  stock_anterior: number
+  stock_nuevo: number
+  motivo: string | null
+  fecha: string
+  created_at: string
 }
 
 export interface PaymentFormData {

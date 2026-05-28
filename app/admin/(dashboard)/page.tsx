@@ -7,9 +7,11 @@ import {
   TrendingUp,
   Calendar,
   User,
-  Receipt
+  Receipt,
+  AlertTriangle,
 } from 'lucide-react'
 import { getExpenses } from '@/lib/actions/expenses'
+import { getLowStockProducts } from '@/lib/actions/products'
 
 export default async function AdminDashboard() {
   const supabase = await createClient()
@@ -71,6 +73,8 @@ export default async function AdminDashboard() {
 
   const monthIncomeTotal = monthPayments?.reduce((sum, p) => sum + Number(p.monto_total), 0) || 0
   const netProfit = monthIncomeTotal - monthExpensesTotal
+
+  const lowStockProducts = await getLowStockProducts()
 
   const stats = [
     {
@@ -256,6 +260,38 @@ export default async function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Low Stock Alert */}
+      {lowStockProducts.length > 0 && (
+        <div className="mt-8 bg-card border border-red-500/30 rounded-lg p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-400" />
+              <h2 className="font-serif text-lg text-cream">Productos con stock bajo</h2>
+            </div>
+            <Link
+              href="/admin/productos/ajuste"
+              className="text-sm text-gold hover:text-gold-light transition-colors"
+            >
+              Ajustar stock →
+            </Link>
+          </div>
+          <div className="space-y-2">
+            {lowStockProducts.map(p => (
+              <div key={p.id} className="flex items-center justify-between py-2 border-b border-gold/10 last:border-b-0">
+                <div>
+                  <span className="text-cream">{p.nombre}</span>
+                  {p.codigo && <span className="text-muted text-sm ml-2">[{p.codigo}]</span>}
+                </div>
+                <div className="flex items-center gap-3 text-sm">
+                  <span className="text-muted">mín. {p.stock_minimo}</span>
+                  <span className="text-red-400 font-medium">{p.stock} unid.</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Quick Links */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">

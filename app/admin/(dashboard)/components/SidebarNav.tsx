@@ -7,7 +7,8 @@ import {
   CreditCard,
   Users,
   Receipt,
-  Truck
+  Truck,
+  ShoppingCart,
 } from 'lucide-react'
 import NavLink from './NavLink'
 
@@ -18,6 +19,7 @@ const navItems = [
   { href: '/admin/clientes', label: 'Clientes', icon: Users },
   { href: '/admin/pagos', label: 'Pagos', icon: CreditCard },
   { href: '/admin/gastos', label: 'Gastos', icon: Receipt },
+  { href: '/admin/compras', label: 'Compras', icon: ShoppingCart },
   { href: '/admin/proveedores', label: 'Proveedores', icon: Truck },
 ]
 

@@ -167,3 +167,85 @@ ALTER TABLE uniks_gastos ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Allow all to authenticated users" ON uniks_gastos
   FOR ALL USING (auth.role() = 'authenticated');
+
+-- ============================================================
+-- Módulo: inventario-compras
+-- ============================================================
+
+-- Columnas adicionales en uniks_productos
+ALTER TABLE uniks_productos
+  ADD COLUMN IF NOT EXISTS codigo VARCHAR(50),
+  ADD COLUMN IF NOT EXISTS stock_minimo INTEGER NOT NULL DEFAULT 0;
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_uniks_productos_codigo
+  ON uniks_productos(codigo) WHERE codigo IS NOT NULL;
+
+-- Tabla de Compras (cabecera)
+CREATE TABLE IF NOT EXISTS uniks_compras (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  proveedor_id UUID REFERENCES uniks_proveedores(id) ON DELETE SET NULL,
+  fecha DATE NOT NULL,
+  tipo_comprobante gasto_tipo_comprobante NOT NULL,
+  numero_comprobante TEXT,
+  metodo_pago gasto_metodo_pago NOT NULL,
+  total DECIMAL(10,2) NOT NULL,
+  notas TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Tabla de Items de Compra
+CREATE TABLE IF NOT EXISTS uniks_compra_items (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  compra_id UUID NOT NULL REFERENCES uniks_compras(id) ON DELETE CASCADE,
+  producto_id UUID NOT NULL REFERENCES uniks_productos(id) ON DELETE RESTRICT,
+  cantidad INTEGER NOT NULL CHECK (cantidad > 0),
+  precio_unitario DECIMAL(10,3) NOT NULL,
+  subtotal DECIMAL(10,2) NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Tabla de Ajustes de Stock (cierre del día)
+CREATE TABLE IF NOT EXISTS uniks_ajustes_stock (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  producto_id UUID NOT NULL REFERENCES uniks_productos(id) ON DELETE RESTRICT,
+  stock_anterior INTEGER NOT NULL,
+  stock_nuevo INTEGER NOT NULL,
+  motivo TEXT,
+  fecha DATE NOT NULL DEFAULT CURRENT_DATE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TRIGGER update_uniks_compras_updated_at
+  BEFORE UPDATE ON uniks_compras
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+ALTER TABLE uniks_compras ENABLE ROW LEVEL SECURITY;
+ALTER TABLE uniks_compra_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE uniks_ajustes_stock ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow all to authenticated users" ON uniks_compras
+  FOR ALL USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Allow all to authenticated users" ON uniks_compra_items
+  FOR ALL USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Allow all to authenticated users" ON uniks_ajustes_stock
+  FOR ALL USING (auth.role() = 'authenticated');
+
+CREATE INDEX IF NOT EXISTS idx_uniks_compras_fecha ON uniks_compras(fecha);
+CREATE INDEX IF NOT EXISTS idx_uniks_compras_proveedor_id ON uniks_compras(proveedor_id);
+CREATE INDEX IF NOT EXISTS idx_uniks_compra_items_compra_id ON uniks_compra_items(compra_id);
+CREATE INDEX IF NOT EXISTS idx_uniks_compra_items_producto_id ON uniks_compra_items(producto_id);
+CREATE INDEX IF NOT EXISTS idx_uniks_ajustes_stock_producto_id ON uniks_ajustes_stock(producto_id);
+CREATE INDEX IF NOT EXISTS idx_uniks_ajustes_stock_fecha ON uniks_ajustes_stock(fecha);
+
+-- Función atómica para ajustar stock (evita race conditions)
+CREATE OR REPLACE FUNCTION adjust_producto_stock(p_producto_id UUID, p_delta INTEGER)
+RETURNS void AS $$
+BEGIN
+  UPDATE uniks_productos
+  SET stock = stock + p_delta
+  WHERE id = p_producto_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;

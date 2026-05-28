@@ -59,6 +59,9 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
     imagen_url_r2 = uploadResult.url || null
   }
 
+  const codigo = (formData.get('codigo') as string)?.trim() || null
+  const stock_minimo = parseInt(formData.get('stock_minimo') as string) || 0
+
   const { data, error } = await supabase
     .from('uniks_productos')
     .insert({
@@ -67,6 +70,8 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
       precio_costo: isNaN(precio_costo) ? null : precio_costo,
       precio,
       imagen_url_r2,
+      codigo,
+      stock_minimo,
     })
     .select()
     .single()
@@ -93,6 +98,8 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
   const precio = parseFloat(formData.get('precio') as string)
   const imagen = formData.get('imagen') as File
   const removeImage = formData.get('removeImage') === 'true'
+  const codigo = (formData.get('codigo') as string)?.trim() || null
+  const stock_minimo = parseInt(formData.get('stock_minimo') as string) || 0
 
   // Get current product to check for old image
   const { data: currentProduct } = await supabase
@@ -134,6 +141,8 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
       precio_costo: isNaN(precio_costo) ? null : precio_costo,
       precio,
       imagen_url_r2,
+      codigo,
+      stock_minimo,
     })
     .eq('id', id)
     .select()
@@ -145,6 +154,24 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
 
   revalidatePath('/admin/productos')
   return { success: true, data }
+}
+
+export async function getLowStockProducts(): Promise<Producto[]> {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('uniks_productos')
+    .select('*')
+    .gt('stock_minimo', 0)
+    .filter('stock', 'lte', 'stock_minimo')
+    .order('stock', { ascending: true })
+
+  if (error) {
+    console.error('Error fetching low stock products:', error)
+    return []
+  }
+
+  return (data || []).filter(p => p.stock <= p.stock_minimo)
 }
 
 export async function deleteProduct(id: string): Promise<ActionResult> {
