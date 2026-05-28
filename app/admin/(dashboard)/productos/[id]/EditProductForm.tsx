@@ -194,7 +194,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                 name="precio_costo"
                 required
                 min="0"
-                step="0.01"
+                step="any"
                 value={precioCosto}
                 onChange={handleCostoChange}
                 className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
