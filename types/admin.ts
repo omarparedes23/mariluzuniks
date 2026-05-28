@@ -119,7 +119,7 @@ export interface CompraItem {
   id: string
   compra_id: string
   producto_id: string
-  producto?: Producto | null
+  producto?: Pick<Producto, 'id' | 'nombre' | 'codigo' | 'stock'> | null
   cantidad: number
   precio_unitario: number
   subtotal: number
@@ -129,7 +129,7 @@ export interface CompraItem {
 export interface AjusteStock {
   id: string
   producto_id: string
-  producto?: Producto | null
+  producto?: Pick<Producto, 'id' | 'nombre' | 'codigo'> | null
   stock_anterior: number
   stock_nuevo: number
   motivo: string | null

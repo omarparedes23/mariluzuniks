@@ -35,9 +35,9 @@ export default function EditCompraForm({ compra, products }: { compra: Compra; p
   const [proveedorId, setProveedorId] = useState<string | null>(compra.proveedor_id)
   const [proveedorNombre, setProveedorNombre] = useState<string | null>(compra.proveedor?.nombre ?? null)
   const [fecha, setFecha] = useState(compra.fecha)
-  const [tipoComprobante, setTipoComprobante] = useState(compra.tipo_comprobante)
+  const [tipoComprobante, setTipoComprobante] = useState<string>(compra.tipo_comprobante)
   const [numeroComprobante, setNumeroComprobante] = useState(compra.numero_comprobante ?? '')
-  const [metodoPago, setMetodoPago] = useState(compra.metodo_pago)
+  const [metodoPago, setMetodoPago] = useState<string>(compra.metodo_pago)
   const [notas, setNotas] = useState(compra.notas ?? '')
   const [items, setItems] = useState<ItemRow[]>(
     compra.items?.map(i => ({

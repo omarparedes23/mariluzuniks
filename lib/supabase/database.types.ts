@@ -13,7 +13,9 @@ export interface Database {
         Row: {
           id: string
           nombre: string
+          codigo: string | null
           stock: number
+          stock_minimo: number
           precio_costo: number | null
           precio: number
           imagen_url_r2: string | null
@@ -23,7 +25,9 @@ export interface Database {
         Insert: {
           id?: string
           nombre: string
+          codigo?: string | null
           stock?: number
+          stock_minimo?: number
           precio_costo?: number | null
           precio: number
           imagen_url_r2?: string | null
@@ -33,7 +37,9 @@ export interface Database {
         Update: {
           id?: string
           nombre?: string
+          codigo?: string | null
           stock?: number
+          stock_minimo?: number
           precio_costo?: number | null
           precio?: number
           imagen_url_r2?: string | null
@@ -268,12 +274,145 @@ export interface Database {
           }
         ]
       }
+      uniks_compras: {
+        Row: {
+          id: string
+          proveedor_id: string | null
+          fecha: string
+          tipo_comprobante: 'factura' | 'boleta' | 'ticket' | 'sin_comprobante'
+          numero_comprobante: string | null
+          metodo_pago: 'efectivo' | 'transferencia' | 'yape'
+          total: number
+          notas: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          proveedor_id?: string | null
+          fecha: string
+          tipo_comprobante: 'factura' | 'boleta' | 'ticket' | 'sin_comprobante'
+          numero_comprobante?: string | null
+          metodo_pago: 'efectivo' | 'transferencia' | 'yape'
+          total: number
+          notas?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          proveedor_id?: string | null
+          fecha?: string
+          tipo_comprobante?: 'factura' | 'boleta' | 'ticket' | 'sin_comprobante'
+          numero_comprobante?: string | null
+          metodo_pago?: 'efectivo' | 'transferencia' | 'yape'
+          total?: number
+          notas?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uniks_compras_proveedor_id_fkey"
+            columns: ["proveedor_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_proveedores"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      uniks_compra_items: {
+        Row: {
+          id: string
+          compra_id: string
+          producto_id: string
+          cantidad: number
+          precio_unitario: number
+          subtotal: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          compra_id: string
+          producto_id: string
+          cantidad: number
+          precio_unitario: number
+          subtotal: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          compra_id?: string
+          producto_id?: string
+          cantidad?: number
+          precio_unitario?: number
+          subtotal?: number
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uniks_compra_items_compra_id_fkey"
+            columns: ["compra_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_compras"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "uniks_compra_items_producto_id_fkey"
+            columns: ["producto_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_productos"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      uniks_ajustes_stock: {
+        Row: {
+          id: string
+          producto_id: string
+          stock_anterior: number
+          stock_nuevo: number
+          motivo: string | null
+          fecha: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          producto_id: string
+          stock_anterior: number
+          stock_nuevo: number
+          motivo?: string | null
+          fecha?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          producto_id?: string
+          stock_anterior?: number
+          stock_nuevo?: number
+          motivo?: string | null
+          fecha?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uniks_ajustes_stock_producto_id_fkey"
+            columns: ["producto_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_productos"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      adjust_producto_stock: {
+        Args: { p_producto_id: string; p_delta: number }
+        Returns: undefined
+      }
     }
     Enums: {
       gasto_tipo_comprobante: 'factura' | 'boleta' | 'ticket' | 'sin_comprobante'
