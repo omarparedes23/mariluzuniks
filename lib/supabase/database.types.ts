@@ -404,6 +404,81 @@ export interface Database {
           }
         ]
       }
+      uniks_control_sesiones: {
+        Row: {
+          id: string
+          fecha_inicio: string
+          fecha_fin: string
+          notas: string | null
+          estado: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          fecha_inicio: string
+          fecha_fin: string
+          notas?: string | null
+          estado?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          fecha_inicio?: string
+          fecha_fin?: string
+          notas?: string | null
+          estado?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      uniks_control_items: {
+        Row: {
+          id: string
+          sesion_id: string
+          producto_id: string
+          stock_anterior: number
+          stock_contado: number | null
+          costo_unitario: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          sesion_id: string
+          producto_id: string
+          stock_anterior?: number
+          stock_contado?: number | null
+          costo_unitario?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          sesion_id?: string
+          producto_id?: string
+          stock_anterior?: number
+          stock_contado?: number | null
+          costo_unitario?: number | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uniks_control_items_sesion_id_fkey"
+            columns: ["sesion_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_control_sesiones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "uniks_control_items_producto_id_fkey"
+            columns: ["producto_id"]
+            isOneToOne: false
+            referencedRelation: "uniks_productos"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -412,6 +487,18 @@ export interface Database {
       adjust_producto_stock: {
         Args: { p_producto_id: string; p_delta: number }
         Returns: undefined
+      }
+      close_control_sesion: {
+        Args: { p_sesion_id: string }
+        Returns: undefined
+      }
+      get_compras_en_periodo: {
+        Args: { p_producto_id: string; p_inicio: string; p_fin: string }
+        Returns: number
+      }
+      get_ajustes_en_periodo: {
+        Args: { p_producto_id: string; p_inicio: string; p_fin: string }
+        Returns: number
       }
     }
     Enums: {

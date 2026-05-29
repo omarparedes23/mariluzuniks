@@ -56,7 +56,11 @@ export default function EditCompraForm({ compra, products }: { compra: Compra; p
   }
 
   function removeItem(index: number) {
-    setItems(prev => prev.filter((_, i) => i !== index))
+    setItems(prev =>
+      prev.length === 1
+        ? [{ producto_id: '', cantidad: 1, precio_unitario: 0, subtotal: 0 }]
+        : prev.filter((_, i) => i !== index)
+    )
   }
 
   function updateItem(index: number, field: keyof ItemRow, value: string | number) {
@@ -256,15 +260,13 @@ export default function EditCompraForm({ compra, products }: { compra: Compra; p
                   <span className="text-cream text-sm font-medium">S/ {item.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="col-span-1 flex justify-center">
-                  {items.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeItem(index)}
-                      className="text-muted hover:text-red-400 transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => removeItem(index)}
+                    className="text-muted hover:text-red-400 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             ))}

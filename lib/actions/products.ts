@@ -163,7 +163,6 @@ export async function getLowStockProducts(): Promise<Producto[]> {
     .from('uniks_productos')
     .select('*')
     .gt('stock_minimo', 0)
-    .filter('stock', 'lte', 'stock_minimo')
     .order('stock', { ascending: true })
 
   if (error) {

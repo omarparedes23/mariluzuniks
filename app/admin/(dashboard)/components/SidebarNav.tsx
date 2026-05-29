@@ -9,6 +9,7 @@ import {
   Receipt,
   Truck,
   ShoppingCart,
+  ClipboardList,
 } from 'lucide-react'
 import NavLink from './NavLink'
 
@@ -20,6 +21,7 @@ const navItems = [
   { href: '/admin/pagos', label: 'Pagos', icon: CreditCard },
   { href: '/admin/gastos', label: 'Gastos', icon: Receipt },
   { href: '/admin/compras', label: 'Compras', icon: ShoppingCart },
+  { href: '/admin/control-stock', label: 'Control Stock', icon: ClipboardList },
   { href: '/admin/proveedores', label: 'Proveedores', icon: Truck },
 ]
 

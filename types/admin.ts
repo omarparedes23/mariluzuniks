@@ -162,3 +162,62 @@ export interface ExpenseFormData {
   numero_comprobante: string
   numero_operacion: string
 }
+
+// ============================================================
+// Control Stock
+// ============================================================
+
+export type ControlEstado = 'borrador' | 'cerrada'
+
+export interface ControlSesion {
+  id: string
+  fecha_inicio: string
+  fecha_fin: string
+  notas: string | null
+  estado: ControlEstado
+  created_at: string
+  updated_at: string
+}
+
+export interface ControlItem {
+  id: string
+  sesion_id: string
+  producto_id: string
+  producto?: {
+    id: string
+    nombre: string
+    codigo: string | null
+    stock: number
+    precio_costo: number | null
+  } | null
+  stock_anterior: number
+  stock_contado: number | null
+  costo_unitario: number | null
+  // computed in server actions (NOT in DB)
+  compras_en_periodo: number
+  ajustes_en_periodo: number
+  consumo_calculado: number | null  // null if stock_contado is null
+  costo_total: number | null        // null if costo_unitario is null
+  created_at: string
+}
+
+export interface ControlSesionConItems extends ControlSesion {
+  items: ControlItem[]
+}
+
+export interface ControlResumen {
+  sesion: ControlSesion
+  items: ControlItem[]
+  total_unidades_consumidas: number
+  total_costo: number
+  productos_sin_costo: number
+  ingresos: number
+  margen_bruto: number
+  margen_pct: number | null
+}
+
+export interface CreateControlSesionInput {
+  fecha_inicio: string
+  fecha_fin: string
+  notas?: string
+}
