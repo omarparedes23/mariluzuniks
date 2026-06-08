@@ -207,6 +207,19 @@ export default function NewProductPage() {
             </div>
           </div>
 
+          {/* Fecha de caducidad */}
+          <div>
+            <label htmlFor="fecha_caducidad" className="block text-sm text-cream/80 mb-2">
+              Fecha de caducidad <span className="text-muted font-normal">(opcional)</span>
+            </label>
+            <input
+              type="date"
+              id="fecha_caducidad"
+              name="fecha_caducidad"
+              className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
+            />
+          </div>
+
           {/* Submit */}
           <div className="flex items-center gap-4 pt-4">
             <button

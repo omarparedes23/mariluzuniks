@@ -7,6 +7,7 @@ export interface Producto {
   precio_costo: number | null
   precio: number
   imagen_url_r2: string | null
+  fecha_caducidad: string | null
   created_at: string
   updated_at: string
 }

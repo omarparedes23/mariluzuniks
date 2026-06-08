@@ -1,8 +1,35 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getProducts } from '@/lib/actions/products'
-import { Plus, Pencil, Package, AlertTriangle } from 'lucide-react'
+import { Plus, Pencil, Package, AlertTriangle, CalendarX } from 'lucide-react'
 import { DeleteProductButton } from './components/DeleteProductButton'
+
+function CaducidadBadge({ fecha }: { fecha: string | null }) {
+  if (!fecha) return <span className="text-muted text-sm">—</span>
+
+  const hoy = new Date()
+  hoy.setHours(0, 0, 0, 0)
+  const vencimiento = new Date(fecha + 'T00:00:00')
+  const diasRestantes = Math.ceil((vencimiento.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24))
+
+  if (diasRestantes < 0) {
+    return (
+      <span className="flex items-center gap-1 text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">
+        <CalendarX className="w-3 h-3" />
+        Vencido
+      </span>
+    )
+  }
+  if (diasRestantes <= 30) {
+    return (
+      <span className="flex items-center gap-1 text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full">
+        <AlertTriangle className="w-3 h-3" />
+        {diasRestantes}d
+      </span>
+    )
+  }
+  return <span className="text-cream text-sm">{new Date(fecha + 'T00:00:00').toLocaleDateString('es-PE')}</span>
+}
 
 export default async function ProductsPage() {
   const products = await getProducts()
@@ -41,6 +68,7 @@ export default async function ProductsPage() {
                 <th className="text-left p-4 text-cream font-medium">Código</th>
                 <th className="text-left p-4 text-cream font-medium">Stock</th>
                 <th className="text-left p-4 text-cream font-medium">Precio</th>
+                <th className="text-left p-4 text-cream font-medium">Caducidad</th>
                 <th className="text-right p-4 text-cream font-medium">Acciones</th>
               </tr>
             </thead>
@@ -78,6 +106,9 @@ export default async function ProductsPage() {
                     </div>
                   </td>
                   <td className="p-4 text-cream">S/ {Number(product.precio).toFixed(2)}</td>
+                  <td className="p-4">
+                    <CaducidadBadge fecha={product.fecha_caducidad} />
+                  </td>
                   <td className="p-4">
                     <div className="flex items-center justify-end gap-2">
                       <Link
