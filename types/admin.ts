@@ -1,3 +1,10 @@
+export interface PaginatedResult<T> {
+  products: T[]
+  total: number
+  totalPages: number
+  currentPage: number
+}
+
 export interface Producto {
   id: string
   nombre: string

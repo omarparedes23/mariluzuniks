@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { uploadImage, deleteImage, extractKeyFromUrl } from '@/lib/r2/client'
-import type { Producto, ActionResult } from '@/types/admin'
+import type { Producto, ActionResult, PaginatedResult } from '@/types/admin'
 
 export async function getProducts(): Promise<Producto[]> {
   const supabase = await createClient()
@@ -20,6 +20,47 @@ export async function getProducts(): Promise<Producto[]> {
   }
 
   return data || []
+}
+
+export async function getProductsPaginated({
+  search = '',
+  page = 1,
+  limit = 20,
+}: {
+  search?: string
+  page?: number
+  limit?: number
+} = {}): Promise<PaginatedResult<Producto>> {
+  const supabase = await createClient()
+  const safePage = Math.max(1, Math.floor(page))
+  const from = (safePage - 1) * limit
+  const to = from + limit - 1
+
+  let query = supabase
+    .from('uniks_productos')
+    .select('*', { count: 'exact' })
+    .order('created_at', { ascending: false })
+    .range(from, to)
+
+  if (search.trim()) {
+    const safe = search.replace(/[%_]/g, m => `\\${m}`)
+    query = query.ilike('nombre', `%${safe}%`)
+  }
+
+  const { data, count, error } = await query
+
+  if (error) {
+    console.error('Error fetching products:', error)
+    return { products: [], total: 0, totalPages: 0, currentPage: safePage }
+  }
+
+  const total = count ?? 0
+  return {
+    products: data || [],
+    total,
+    totalPages: Math.max(1, Math.ceil(total / limit)),
+    currentPage: safePage,
+  }
 }
 
 export async function getProduct(id: string): Promise<Producto | null> {

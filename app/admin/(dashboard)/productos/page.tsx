@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getProducts } from '@/lib/actions/products'
+import { getProductsPaginated } from '@/lib/actions/products'
 import { Plus, Pencil, Package, AlertTriangle, CalendarX } from 'lucide-react'
 import { DeleteProductButton } from './components/DeleteProductButton'
+import { ProductsSearch } from './components/ProductsSearch'
+import { PaginationControls } from './components/PaginationControls'
 
 function CaducidadBadge({ fecha }: { fecha: string | null }) {
   if (!fecha) return <span className="text-muted text-sm">—</span>
@@ -31,12 +33,21 @@ function CaducidadBadge({ fecha }: { fecha: string | null }) {
   return <span className="text-cream text-sm">{new Date(fecha + 'T00:00:00').toLocaleDateString('es-PE')}</span>
 }
 
-export default async function ProductsPage() {
-  const products = await getProducts()
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; page?: string }>
+}) {
+  const { q = '', page = '1' } = await searchParams
+  const currentPage = parseInt(page) || 1
+  const { products, total, totalPages, currentPage: safePage } = await getProductsPaginated({
+    search: q,
+    page: currentPage,
+  })
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-serif text-3xl text-cream mb-2">Productos</h1>
           <p className="text-muted">Gestiona el inventario de productos</p>
@@ -56,6 +67,10 @@ export default async function ProductsPage() {
             Nuevo Producto
           </Link>
         </div>
+      </div>
+
+      <div className="mb-4">
+        <ProductsSearch initialQuery={q} />
       </div>
 
       {products.length > 0 ? (
@@ -124,6 +139,23 @@ export default async function ProductsPage() {
               ))}
             </tbody>
           </table>
+          <PaginationControls
+            currentPage={safePage}
+            totalPages={totalPages}
+            total={total}
+            query={q}
+          />
+        </div>
+      ) : q.trim() ? (
+        <div className="bg-card border border-gold/20 rounded-lg p-12 text-center">
+          <Package className="w-12 h-12 mx-auto mb-4 text-muted" />
+          <p className="text-cream mb-2">No encontramos productos para &ldquo;{q}&rdquo;</p>
+          <Link
+            href="/admin/productos"
+            className="text-gold hover:text-gold-light transition-colors text-sm"
+          >
+            Limpiar búsqueda →
+          </Link>
         </div>
       ) : (
         <div className="bg-card border border-gold/20 rounded-lg p-12 text-center">
