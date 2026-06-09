@@ -1,0 +1,54 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Next.js 15 (App Router), React 19, TypeScript 5.7 (strict), Tailwind CSS 4, Framer Motion 11, Lucide React
+  Database: Supabase (PostgreSQL) with RLS policies, Supabase Auth (email/password)
+  Storage: Cloudflare R2 (S3-compatible) for product images
+  Architecture: App Router with Server Actions (lib/actions/), middleware for auth protection, sidebar admin dashboard
+  Domain: Salon & Spa management (Peru) — Products, Services, Clients, Payments, Expenses, Purchases, Stock Control
+  Deployment: Vercel
+  Language: Spanish (es_PE) for all UI and business logic
+  Tables: uniks_productos, uniks_servicios, uniks_clientes, uniks_proveedores, uniks_pagos, uniks_pago_servicios, uniks_gastos, uniks_compras, uniks_compra_items, uniks_ajustes_stock, uniks_control_sesiones, uniks_control_items
+
+strict_tdd: false
+
+testing:
+  runner: none
+  layers:
+    unit: false
+    integration: false
+    e2e: false
+  coverage: false
+  quality_tools:
+    linter:
+      available: true
+      command: "npm run lint"
+    type_checker:
+      available: true
+      command: "npx tsc --noEmit"
+    formatter:
+      available: false
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Identify affected modules/packages
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group tasks by phase (infrastructure, implementation, testing)
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks small enough to complete in one session
+  apply:
+    - Follow existing code patterns and conventions
+    - Load relevant coding skills for the project stack (nextjs-15, react-19, tailwind-4, typescript)
+  verify:
+    - Run typecheck via `npx tsc --noEmit`
+    - Run linter via `npm run lint`
+    - Compare implementation against every spec scenario
+  archive:
+    - Warn before merging destructive deltas (large removals)

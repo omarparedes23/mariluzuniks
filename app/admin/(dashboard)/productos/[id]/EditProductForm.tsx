@@ -165,6 +165,21 @@ export default function EditProductForm({ product }: EditProductFormProps) {
             />
           </div>
 
+          {/* Descripción */}
+          <div>
+            <label htmlFor="descripcion" className="block text-sm text-cream/80 mb-2">
+              Descripción <span className="text-muted font-normal">(opcional — visible en la tienda)</span>
+            </label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              rows={3}
+              defaultValue={product.descripcion ?? ''}
+              className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors resize-none"
+              placeholder="Describe el producto para tus clientes..."
+            />
+          </div>
+
           {/* Codigo */}
           <div>
             <label htmlFor="codigo" className="block text-sm text-cream/80 mb-2">

@@ -100,6 +100,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
     imagen_url_r2 = uploadResult.url || null
   }
 
+  const descripcion = (formData.get('descripcion') as string)?.trim() || null
   const codigo = (formData.get('codigo') as string)?.trim() || null
   const stock_minimo = parseInt(formData.get('stock_minimo') as string) || 0
   const fecha_caducidad = (formData.get('fecha_caducidad') as string)?.trim() || null
@@ -112,6 +113,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
       precio_costo: isNaN(precio_costo) ? null : precio_costo,
       precio,
       imagen_url_r2,
+      descripcion,
       codigo,
       stock_minimo,
       fecha_caducidad,
@@ -141,6 +143,7 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
   const precio = parseFloat(formData.get('precio') as string)
   const imagen = formData.get('imagen') as File
   const removeImage = formData.get('removeImage') === 'true'
+  const descripcion = (formData.get('descripcion') as string)?.trim() || null
   const codigo = (formData.get('codigo') as string)?.trim() || null
   const stock_minimo = parseInt(formData.get('stock_minimo') as string) || 0
   const fecha_caducidad = (formData.get('fecha_caducidad') as string)?.trim() || null
@@ -185,6 +188,7 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
       precio_costo: isNaN(precio_costo) ? null : precio_costo,
       precio,
       imagen_url_r2,
+      descripcion,
       codigo,
       stock_minimo,
       fecha_caducidad,

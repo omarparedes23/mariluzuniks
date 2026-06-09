@@ -8,9 +8,11 @@ import Link from 'next/link'
 interface NavLink {
   label: string
   href: string
+  isRoute?: boolean
 }
 
 const navLinks: NavLink[] = [
+  { label: 'Tienda', href: '/tienda', isRoute: true },
   { label: 'Servicios', href: '#servicios' },
   { label: 'Galería', href: '#galeria' },
   { label: 'Nosotros', href: '#nosotros' },
@@ -68,13 +70,13 @@ export default function Navbar() {
           <ul className="hidden md:flex items-center gap-8" role="list">
             {navLinks.map(({ label, href }) => (
               <li key={href}>
-                <a
+                <Link
                   href={href}
                   className="font-sans text-sm text-cream/60 hover:text-gold transition-colors duration-200 relative group"
                 >
                   {label}
                   <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300" />
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -160,13 +162,13 @@ export default function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 + i * 0.06 }}
                 >
-                  <a
+                  <Link
                     href={href}
                     onClick={closeMenu}
                     className="font-serif text-2xl text-cream/80 hover:text-gold transition-colors block py-2"
                   >
                     {label}
-                  </a>
+                  </Link>
                 </motion.li>
               ))}
             </ul>
