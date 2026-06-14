@@ -18,6 +18,7 @@ const jost = Jost({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.unikssalonspa.pe'),
   title: 'Uniks Salón & Spa | Peluquería y Belleza en San Borja, Lima',
   description:
     'Especialistas en mechas brasileras, keratina, tratamientos capilares, manicure y más. Ubicados en San Borja, Lima. Reserva tu cita por WhatsApp.',
@@ -34,8 +35,25 @@ export const metadata: Metadata = {
     title: 'Uniks Salón & Spa | San Borja, Lima',
     description:
       'Especialistas en mechas, keratina, tratamientos capilares y más. Reserva tu cita por WhatsApp.',
+    url: 'https://www.unikssalonspa.pe/',
+    siteName: 'Uniks Salón & Spa',
     type: 'website',
     locale: 'es_PE',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1440,
+        height: 1440,
+        alt: 'Uniks Salón & Spa — Staff',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Uniks Salón & Spa | San Borja, Lima',
+    description:
+      'Especialistas en mechas, keratina, tratamientos capilares y más. Reserva tu cita por WhatsApp.',
+    images: ['/og-image.jpg'],
   },
 }
 
