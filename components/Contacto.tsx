@@ -19,7 +19,7 @@ const infoItems: InfoItem[] = [
   {
     icon: MapPin,
     label: 'Dirección',
-    value: 'Alejandro Scarlatti, San Borja 15037, Lima, Perú',
+    value: 'Scarlatti 208, San Borja, Perú',
   },
   {
     icon: Clock,
@@ -120,7 +120,7 @@ export default function Contacto() {
           >
             <div className="relative w-full aspect-video lg:aspect-[4/3] overflow-hidden border border-gold/15">
               <iframe
-                src="https://maps.google.com/maps?q=Alejandro+Scarlatti+San+Borja+Lima+Peru&output=embed"
+                src="https://maps.google.com/maps?q=Scarlatti+208+San+Borja+Lima+Peru&output=embed"
                 className="absolute inset-0 w-full h-full border-0 grayscale"
                 loading="lazy"
                 title="Ubicación Uniks Salón & Spa en San Borja, Lima"
@@ -139,7 +139,7 @@ export default function Contacto() {
               />
             </div>
             <p className="font-sans text-xs text-cream/30 mt-3 text-center">
-              Alejandro Scarlatti, San Borja 15037, Lima
+              Scarlatti 208, San Borja, Perú
             </p>
           </motion.div>
         </div>
