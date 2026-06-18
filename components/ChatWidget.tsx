@@ -9,6 +9,30 @@ type Message = {
   content: string
 }
 
+const URL_REGEX = /(https?:\/\/[^\s]+|wa\.me\/[^\s]+)/g
+
+function renderWithLinks(text: string) {
+  const parts = text.split(URL_REGEX)
+  return parts.map((part, i) => {
+    if (URL_REGEX.test(part)) {
+      URL_REGEX.lastIndex = 0
+      const href = part.startsWith('http') ? part : `https://${part}`
+      return (
+        <a
+          key={i}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gold underline underline-offset-2 hover:text-gold/80 transition-colors"
+        >
+          {part}
+        </a>
+      )
+    }
+    return part
+  })
+}
+
 const INITIAL_MESSAGE: Message = {
   role: 'assistant',
   content: '¡Hola! Soy la asistente virtual de Unik\'s Salon & Spa. ¿En qué puedo ayudarte hoy?',
@@ -139,7 +163,7 @@ export default function ChatWidget() {
                         : 'bg-white/[0.05] text-cream/80 rounded-2xl rounded-bl-sm border border-gold/10 font-sans'
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === 'assistant' ? renderWithLinks(msg.content) : msg.content}
                     {msg.role === 'assistant' &&
                       isStreaming &&
                       i === messages.length - 1 &&
