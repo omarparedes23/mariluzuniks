@@ -244,6 +244,9 @@ export async function deleteProduct(id: string): Promise<ActionResult> {
     .eq('id', id)
 
   if (error) {
+    if (error.code === '23503') {
+      return { success: false, error: 'Este producto tiene historial en control de stock y no puede eliminarse.' }
+    }
     return { success: false, error: 'Error al eliminar el producto' }
   }
 

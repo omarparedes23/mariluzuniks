@@ -8,6 +8,7 @@ import Nosotros from '@/components/Nosotros'
 import Testimonios from '@/components/Testimonios'
 import Contacto from '@/components/Contacto'
 import Footer from '@/components/Footer'
+import ChatWidget from '@/components/ChatWidget'
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <Testimonios />
       <Contacto />
       <Footer />
+      <ChatWidget />
     </main>
   )
 }
