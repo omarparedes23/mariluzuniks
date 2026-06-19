@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { getClients } from '@/lib/actions/clients'
 import type { Cliente } from '@/types/admin'
-import { Search, User, Phone, Mail, Calendar, Pencil, Users } from 'lucide-react'
+import { Search, User, Phone, Mail, Pencil, Users } from 'lucide-react'
 import { DeleteCustomerButton } from './DeleteCustomerButton'
 
 export default function CustomerList() {
@@ -25,14 +25,6 @@ export default function CustomerList() {
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value)
-  }
-
-  function formatDate(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString('es-PE', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    })
   }
 
   return (
@@ -62,7 +54,7 @@ export default function CustomerList() {
                 <th className="text-left p-4 text-cream font-medium">Nombre</th>
                 <th className="text-left p-4 text-cream font-medium">Teléfono</th>
                 <th className="text-left p-4 text-cream font-medium">Email</th>
-                <th className="text-left p-4 text-cream font-medium">Registro</th>
+                <th className="text-left p-4 text-cream font-medium">Notas</th>
                 <th className="text-right p-4 text-cream font-medium">Acciones</th>
               </tr>
             </thead>
@@ -99,10 +91,11 @@ export default function CustomerList() {
                     )}
                   </td>
                   <td className="p-4">
-                    <span className="flex items-center gap-1 text-muted text-sm">
-                      <Calendar className="w-4 h-4" />
-                      {formatDate(customer.created_at)}
-                    </span>
+                    {customer.notas ? (
+                      <span className="text-cream text-sm">{customer.notas}</span>
+                    ) : (
+                      <span className="text-muted text-sm">—</span>
+                    )}
                   </td>
                   <td className="p-4">
                     <div className="flex items-center justify-end gap-2">
