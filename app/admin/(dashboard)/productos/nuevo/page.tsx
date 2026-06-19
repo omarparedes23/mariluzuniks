@@ -234,6 +234,24 @@ export default function NewProductPage() {
             />
           </div>
 
+          {/* Mostrar en tienda */}
+          <div className="flex items-start gap-3 p-4 bg-bg rounded-lg border border-gold/20">
+            <input
+              type="checkbox"
+              id="mostrar_en_tienda"
+              name="mostrar_en_tienda"
+              className="mt-0.5 w-4 h-4 accent-[var(--color-gold)] cursor-pointer"
+            />
+            <div>
+              <label htmlFor="mostrar_en_tienda" className="text-sm text-cream/80 cursor-pointer font-medium">
+                Mostrar en tienda
+              </label>
+              <p className="text-muted text-xs mt-0.5">
+                El producto será visible en la tienda pública para los clientes.
+              </p>
+            </div>
+          </div>
+
           {/* Submit */}
           <div className="flex items-center gap-4 pt-4">
             <button

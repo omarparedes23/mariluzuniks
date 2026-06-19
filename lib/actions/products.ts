@@ -104,6 +104,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
   const codigo = (formData.get('codigo') as string)?.trim() || null
   const stock_minimo = parseInt(formData.get('stock_minimo') as string) || 0
   const fecha_caducidad = (formData.get('fecha_caducidad') as string)?.trim() || null
+  const mostrar_en_tienda = formData.get('mostrar_en_tienda') === 'on'
 
   const { data, error } = await supabase
     .from('uniks_productos')
@@ -117,6 +118,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
       codigo,
       stock_minimo,
       fecha_caducidad,
+      mostrar_en_tienda,
     })
     .select()
     .single()
@@ -147,6 +149,7 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
   const codigo = (formData.get('codigo') as string)?.trim() || null
   const stock_minimo = parseInt(formData.get('stock_minimo') as string) || 0
   const fecha_caducidad = (formData.get('fecha_caducidad') as string)?.trim() || null
+  const mostrar_en_tienda = formData.get('mostrar_en_tienda') === 'on'
 
   // Get current product to check for old image
   const { data: currentProduct } = await supabase
@@ -192,6 +195,7 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
       codigo,
       stock_minimo,
       fecha_caducidad,
+      mostrar_en_tienda,
     })
     .eq('id', id)
     .select()

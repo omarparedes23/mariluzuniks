@@ -16,6 +16,7 @@ export interface Producto {
   imagen_url_r2: string | null
   descripcion: string | null
   fecha_caducidad: string | null
+  mostrar_en_tienda: boolean
   created_at: string
   updated_at: string
 }
