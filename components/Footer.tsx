@@ -113,6 +113,14 @@ export default function Footer() {
           &copy; 2025 Uniks Salón &amp; Spa &middot; San Borja, Lima
         </p>
 
+        {/* Privacy policy */}
+        <Link
+          href="/privacidad"
+          className="font-sans text-[0.6rem] text-cream/20 hover:text-cream/50 transition-colors tracking-wider"
+        >
+          Política de Privacidad
+        </Link>
+
         {/* Admin access — intentionally subtle */}
         <Link
           href="/admin"
