@@ -87,6 +87,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
   const stock = parseInt(formData.get('stock') as string)
   const precio_costo = parseFloat(formData.get('precio_costo') as string)
   const precio = parseFloat(formData.get('precio') as string)
+  const precio_publico = parseFloat(formData.get('precio_publico') as string)
   const imagen = formData.get('imagen') as File
 
   let imagen_url_r2: string | null = null
@@ -113,6 +114,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult<Pr
       stock,
       precio_costo: isNaN(precio_costo) ? null : precio_costo,
       precio,
+      precio_publico: isNaN(precio_publico) ? null : precio_publico,
       imagen_url_r2,
       descripcion,
       codigo,
@@ -143,6 +145,7 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
   const stock = parseInt(formData.get('stock') as string)
   const precio_costo = parseFloat(formData.get('precio_costo') as string)
   const precio = parseFloat(formData.get('precio') as string)
+  const precio_publico = parseFloat(formData.get('precio_publico') as string)
   const imagen = formData.get('imagen') as File
   const removeImage = formData.get('removeImage') === 'true'
   const descripcion = (formData.get('descripcion') as string)?.trim() || null
@@ -190,6 +193,7 @@ export async function updateProduct(id: string, formData: FormData): Promise<Act
       stock,
       precio_costo: isNaN(precio_costo) ? null : precio_costo,
       precio,
+      precio_publico: isNaN(precio_publico) ? null : precio_publico,
       imagen_url_r2,
       descripcion,
       codigo,

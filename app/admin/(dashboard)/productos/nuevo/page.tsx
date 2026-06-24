@@ -181,10 +181,10 @@ export default function NewProductPage() {
           </div>
 
           {/* Prices */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
               <label htmlFor="precio_costo" className="block text-sm text-cream/80 mb-2">
-                Precio de costo (S/) *
+                Precio costo (S/) *
               </label>
               <input
                 type="number"
@@ -198,12 +198,12 @@ export default function NewProductPage() {
                 className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
                 placeholder="0.00"
               />
-              <p className="text-muted text-xs mt-1">Precio unitario de la factura</p>
+              <p className="text-muted text-xs mt-1">Lo que paga a la empresa</p>
             </div>
             <div>
               <label htmlFor="precio" className="block text-sm text-cream/80 mb-2">
-                Precio de venta (S/) *
-                <span className="ml-2 text-gold/70 font-normal">+18%</span>
+                Referencia
+                <span className="ml-2 text-gold/50 font-normal">+18%</span>
               </label>
               <input
                 type="number"
@@ -213,11 +213,28 @@ export default function NewProductPage() {
                 min="0"
                 step="0.01"
                 value={precioVenta}
-                onChange={(e) => setPrecioVenta(e.target.value)}
+                readOnly
+                className="w-full bg-bg border border-gold/10 rounded px-4 py-3 text-muted/60 cursor-not-allowed select-none"
+                placeholder="0.00"
+                tabIndex={-1}
+              />
+              <p className="text-muted text-xs mt-1">Calculado automático</p>
+            </div>
+            <div>
+              <label htmlFor="precio_publico" className="block text-sm text-cream/80 mb-2">
+                Precio público (S/)
+                <span className="ml-2 text-gold/70 font-normal">tienda</span>
+              </label>
+              <input
+                type="number"
+                id="precio_publico"
+                name="precio_publico"
+                min="0"
+                step="0.01"
                 className="w-full bg-bg border border-gold/30 rounded px-4 py-3 text-cream placeholder:text-muted focus:border-gold focus:outline-none transition-colors"
                 placeholder="0.00"
               />
-              <p className="text-muted text-xs mt-1">Se calcula solo, pero puedes ajustarlo</p>
+              <p className="text-muted text-xs mt-1">Lo que ve el cliente en la tienda</p>
             </div>
           </div>
 

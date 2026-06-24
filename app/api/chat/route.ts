@@ -48,7 +48,7 @@ export async function POST(request: Request) {
         (hasMore
           ? `\n(y ${allProducts.length - PRODUCTS_LIMIT} productos más disponibles en la tienda)`
           : '') +
-        '\nPara ver el catálogo completo visita unikssalonspa.pe/tienda. También puedes consultar por WhatsApp al wa.me/51941719794.'
+        '\nPara ver el catálogo completo visita https://unikssalonspa.pe/tienda. También puedes consultar por WhatsApp al wa.me/51941719794.'
     } else {
       productsContext =
         '\n\n## PRODUCTOS EN VENTA\nActualmente no tenemos productos disponibles en tienda. Redirige al WhatsApp si preguntan.'

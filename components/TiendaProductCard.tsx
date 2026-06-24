@@ -52,7 +52,7 @@ export default function TiendaProductCard({ product, index }: TiendaProductCardP
 
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-gold/10">
           <span className="font-serif text-xl text-gold">
-            S/ {Number(product.precio).toFixed(2)}
+            S/ {Number(product.precio_publico ?? product.precio).toFixed(2)}
           </span>
           <span className="text-xs text-muted/60 tracking-widest uppercase">
             Disponible

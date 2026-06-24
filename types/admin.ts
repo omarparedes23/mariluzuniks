@@ -13,6 +13,7 @@ export interface Producto {
   stock_minimo: number
   precio_costo: number | null
   precio: number
+  precio_publico: number | null
   imagen_url_r2: string | null
   descripcion: string | null
   fecha_caducidad: string | null

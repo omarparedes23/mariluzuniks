@@ -16,17 +16,22 @@ function renderWithLinks(text: string) {
   return parts.map((part, i) => {
     if (URL_REGEX.test(part)) {
       URL_REGEX.lastIndex = 0
-      const href = part.startsWith('http') ? part : `https://${part}`
+      const trailingMatch = part.match(/([.,!?)]+)$/)
+      const trailing = trailingMatch ? trailingMatch[1] : ''
+      const cleanUrl = trailing ? part.slice(0, -trailing.length) : part
+      const href = cleanUrl.startsWith('http') ? cleanUrl : `https://${cleanUrl}`
       return (
-        <a
-          key={i}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gold underline underline-offset-2 hover:text-gold/80 transition-colors"
-        >
-          {part}
-        </a>
+        <span key={i}>
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gold underline underline-offset-2 hover:text-gold/80 transition-colors"
+          >
+            {cleanUrl}
+          </a>
+          {trailing}
+        </span>
       )
     }
     return part
