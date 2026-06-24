@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       productsContext =
         '\n\n## PRODUCTOS EN VENTA\nActualmente tenemos los siguientes productos disponibles en nuestra tienda online:\n' +
         preview
-          .map(p => `- ${p.nombre}: S/ ${p.precio}${p.descripcion ? ` — ${p.descripcion}` : ''}`)
+          .map(p => `- ${p.nombre}: S/ ${p.precio_publico ?? p.precio}${p.descripcion ? ` — ${p.descripcion}` : ''}`)
           .join('\n') +
         (hasMore
           ? `\n(y ${allProducts.length - PRODUCTS_LIMIT} productos más disponibles en la tienda)`
