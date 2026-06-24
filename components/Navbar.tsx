@@ -17,6 +17,7 @@ const navLinks: NavLink[] = [
   { label: 'Galería', href: '#galeria' },
   { label: 'Nosotros', href: '#nosotros' },
   { label: 'Contacto', href: '#contacto' },
+  { label: 'Blog', href: '/blog', isRoute: true },
 ]
 
 const WA_URL = 'https://wa.me/51941719794'

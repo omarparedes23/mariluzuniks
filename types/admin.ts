@@ -22,6 +22,18 @@ export interface Producto {
   updated_at: string
 }
 
+export interface BlogPost {
+  id: string
+  titulo: string
+  slug: string
+  resumen: string | null
+  contenido: string
+  imagen_url: string | null
+  publicado: boolean
+  created_at: string
+  updated_at: string
+}
+
 export interface Servicio {
   id: string
   nombre: string

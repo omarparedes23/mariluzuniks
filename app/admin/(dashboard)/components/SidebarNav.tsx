@@ -10,6 +10,7 @@ import {
   Truck,
   ShoppingCart,
   ClipboardList,
+  BookOpen,
 } from 'lucide-react'
 import NavLink from './NavLink'
 
@@ -23,6 +24,7 @@ const navItems = [
   { href: '/admin/compras', label: 'Compras', icon: ShoppingCart },
   { href: '/admin/control-stock', label: 'Control Stock', icon: ClipboardList },
   { href: '/admin/proveedores', label: 'Proveedores', icon: Truck },
+  { href: '/admin/blog', label: 'Blog', icon: BookOpen },
 ]
 
 export default function SidebarNav() {

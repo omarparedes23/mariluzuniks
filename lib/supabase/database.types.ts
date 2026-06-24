@@ -60,6 +60,42 @@ export interface Database {
         }
         Relationships: []
       }
+      uniks_blog_posts: {
+        Row: {
+          id: string
+          titulo: string
+          slug: string
+          resumen: string | null
+          contenido: string
+          imagen_url: string | null
+          publicado: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          titulo: string
+          slug: string
+          resumen?: string | null
+          contenido: string
+          imagen_url?: string | null
+          publicado?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          titulo?: string
+          slug?: string
+          resumen?: string | null
+          contenido?: string
+          imagen_url?: string | null
+          publicado?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       uniks_servicios: {
         Row: {
           id: string
