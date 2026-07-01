@@ -33,14 +33,43 @@ function formatDate(dateStr: string) {
   })
 }
 
+function articleSchema(post: {
+  titulo: string
+  resumen: string | null
+  imagen_url: string | null
+  created_at: string
+  updated_at: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.titulo,
+    description: post.resumen ?? undefined,
+    image: post.imagen_url ?? undefined,
+    datePublished: post.created_at,
+    dateModified: post.updated_at,
+    author: {
+      '@type': 'Organization',
+      name: 'Uniks Salón & Spa',
+    },
+  }
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
   const post = await getPostBySlug(slug)
 
   if (!post) notFound()
 
+  const jsonLd = articleSchema(post)
+
   return (
     <main className="min-h-screen bg-bg">
+      {/* Schema.org Article */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Mini navbar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-[8px] border-b border-gold/10">
         <nav className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">

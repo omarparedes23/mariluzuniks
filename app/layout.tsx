@@ -62,6 +62,48 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BeautySalon',
+  name: 'Uniks Salón & Spa',
+  image: 'https://www.unikssalonspa.pe/og-image.jpg',
+  telephone: '+51 941 719 794',
+  email: 'mariluzrodriguezmerino27@gmail.com',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Scarlatti 208',
+    addressLocality: 'San Borja',
+    addressRegion: 'Lima',
+    addressCountry: 'PE',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -12.106,
+    longitude: -76.995,
+  },
+  url: 'https://www.unikssalonspa.pe',
+  sameAs: [
+    'https://www.instagram.com/unikssalonspa',
+    'https://www.facebook.com/share/14YEPYgBVai/',
+    'https://www.tiktok.com/@unikssalon',
+  ],
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '20:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: '09:00',
+      closes: '18:00',
+    },
+  ],
+  priceRange: 'S/ 30 - S/ 500',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -70,6 +112,11 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${cormorant.variable} ${jost.variable}`}>
       <body className="bg-bg text-cream font-sans antialiased">
+        {/* Schema.org LocalBusiness */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         {children}
       </body>
     </html>
